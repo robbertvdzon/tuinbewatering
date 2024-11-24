@@ -1,4 +1,4 @@
-package tuinbewatering
+package tuinbewatering.common
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.firestore.Firestore
@@ -7,16 +7,18 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.cloud.FirestoreClient
 import java.io.FileInputStream
 
-object FirebaseConfig {
+class FirebaseConfig(
+    private val serviceAccountFile: String,
+    private val databaseUrl: String
+) {
     fun initializeFirestore(): Firestore? {
         val serviceAccount =
-            FileInputStream("/Users/robbertvanderzon/tuinbewatering-firebase-adminsdk-mdooy-b394f2553c.json")
+            FileInputStream(serviceAccountFile)
         val options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-            .setDatabaseUrl("https://tuinbewatering.firebaseio.com")
+            .setDatabaseUrl(databaseUrl)
             .build()
         FirebaseApp.initializeApp(options)
-        val dbFirestore = FirestoreClient.getFirestore()
-        return dbFirestore
+        return FirestoreClient.getFirestore()
     }
 }
