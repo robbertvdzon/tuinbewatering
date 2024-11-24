@@ -7,4 +7,7 @@ Login op https://console.firebase.google.com/
 - https://console.firebase.google.com/project/tuinbewatering/firestore
   - create database
   - start in test mode
-- 
+
+TODO:
+- run op pi
+- display in zellfde app

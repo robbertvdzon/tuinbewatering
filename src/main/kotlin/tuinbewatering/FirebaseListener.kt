@@ -9,7 +9,7 @@ import java.util.concurrent.Executors
 object FirebaseListener {
     private val executor = Executors.newSingleThreadExecutor()
 
-    fun processCommands(dbFirestore: Firestore?, process: (Any) -> Unit) {
+    fun processCommands(dbFirestore: Firestore?, process: (String) -> Unit) {
         val documentRef = dbFirestore?.collection("bewatering")?.document("commands")
         documentRef?.addSnapshotListener { snapshot, error ->
             if (error != null) {
@@ -27,11 +27,11 @@ object FirebaseListener {
     private fun processDocumentSnapshot(
         snapshot: DocumentSnapshot,
         documentRef: DocumentReference,
-        process: (Any) -> Unit
+        process: (String) -> Unit
     ) {
         val data = snapshot.data ?: emptyMap()
         for ((key, value) in data) {
-            process(value)
+            process(value.toString())
             documentRef.update(key, FieldValue.delete())
                 .addListener({ }, executor)
         }
